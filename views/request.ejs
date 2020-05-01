@@ -1,0 +1,31 @@
+<%- include ('includes/navbar') %>
+<div class="container">
+    <div class="jumbotron">
+        <% if (data1 != undefined) { %>
+            <% if (type == "issue") { %>
+                <h4>Please confirm your Password to issue the following Book:</h4>
+            <% } else if (type == "return"){ %>
+                <h4>Please confirm your Password to return the following Book:</h4>
+            <% } else if (type=="remove") { %>
+                <h4>PLease Enter your Password to confirm the remove Book from Library Request:</h4>
+            <% } %>
+            <h5> <strong>Book Id:</strong> <%- data1.BookID %><br><strong>Book Name:</strong> <%- data1.Book %><br><strong>Author :</strong> <%- data1.Author %></h5>
+            <form action = "/request?type=<%- type %>" method="POST">
+                <div class="form-group text-primary">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary btn-large">Confirm</button>
+            </form>
+        <% } else { %>
+            <h4>There is no Book Avialable with the given ID in the Library</h4>
+        <% } %>
+    </div>
+</div>
+
+<style>
+    label{
+        font-size:2em;
+        color: white !important;
+    }
+</style>

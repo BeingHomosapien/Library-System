@@ -1,0 +1,60 @@
+<%- include ('includes/navbar') %>
+<div class='container'>
+    <div class='jumbotron'>
+        <% if (session.username === "admin") { %>
+            <h4>Hello, Admin </h5>
+            <h4>Add another Book to the Library</h4>
+            <form action = "/add" method = "POST">
+                <div class="form-group text-primary">
+                    <label>Book ID</label>
+                    <input placeholder="Enter The Book ID" name="bookid" type="text" class= "form-contorl">
+                </div>
+                <div class="form-group text-primary">
+                    <label>Book Name</label>
+                    <input placeholder = "Enter Book Name" name="bookname" type = "text" class="form-control">
+                </div>
+                <div class="form-group text-primary">
+                    <label>Author Name</label>
+                    <input placeholder = "Author Name" name="author" type = "text" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">Add Book</button>
+            </form>
+        <% } else { %>
+            <h4>Hello, <%- session.username %></h5>
+            <% if (status) { %>
+                <h5>Below is the list of Books Issued to You</h5>
+                <table class='table table-striped table-hover'>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Book</th>
+                        <th>Book ID</th>
+                        <th>Author</th>
+                        <th>Issue Date</th>
+                        <th></th>
+                    </tr>
+                    <% data.forEach(element => { %>
+                        <tr>
+                            <td><%- element.ID %></td>
+                            <td><%- element.Book %></td>
+                            <td><%- element.BookID %></td>
+                            <td><%- element.Author %></td>
+                            <td><%- element.DateIssued %></td>
+                            <td><a class = "btn btn-danger " href="/returnrequest?id=<%- element.BookID %>">Return</a></td>
+                        </tr>
+                    <% }) %>
+                </table>
+            <% } else { %>
+                <h5>Currently no books are issued to you please go to the Books Section and Find the book of your choice</h5>
+            <% } %>
+        <% } %>
+    </div>
+</div>
+<style>
+    table{
+        font-size : 1.25em !important;
+    }
+    label{
+        color:white;
+        font-size:2em;
+      }
+</style>

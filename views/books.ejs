@@ -1,0 +1,65 @@
+<%- include ('includes/navbar') %>
+<div class='container'>
+    <div class='jumbotron'>
+        <h1 class="text-primary text-center">Books Avialabe in Library</h1>
+    </div>
+    <br>
+    <% if (array != undefined) { %>
+        <table class='table table-striped'>
+            <tr>
+                <th>Book ID</th>
+                <th>Book</th>
+                <th>Author</th>
+                <% if(session.username == "admin") { %>
+                    <th>Issued To</th>
+                    <th>Issue Date</th>
+                <% } %>
+                <th>Status</th>
+            </tr>
+            <% array.forEach(element => { %>
+                <tr>
+                    <td><%- element.BookID %> </td>
+                    <td><%- element.Book %> </td>
+                    <td><%- element.Author %></td>
+                    <% if (session.username == "admin") { %>
+                        <td><%- element.IssuedTo %></td>
+                        <td><%- element.DateIssued %></td>
+                        <% if (element.status === "1") { %>
+                            <td>Issued</td>
+                        <% } else { %>
+                            <td><a class='btn danger btn-large' href='/removerequest?id=<%- element.BookID %>'>Remove</a></td>
+                        <% } %>
+
+                    <% } else { %>
+                        <% if (element.status === "1"){ %>
+                            <td>Issued</td>
+                        <% } else { %>
+                            <td><a class='btn btn-large' href='/issuerequest?id=<%- element.BookID %>'>Issue</a></td>
+                        <% } %>
+                    <% } %>
+                </tr>
+            <% }) %>
+        </table>
+    <% } else { %>
+        <div class = "jumbotron">'
+            <h4>There are no Books Avialable in the library. Ask your Librarian to update the database.</h4>
+        </div>
+    <% } %>
+</div>
+<style>
+    table{
+        font-size : 2em !important;
+    }
+    th{
+        color:white !important;
+    }
+    td{
+        color:#2BBBAD !important;
+    }
+    tr:hover td{
+        color:black !important;
+    }
+    .danger {
+        background:rgb(255, 60, 60) !important;
+    }
+</style>
