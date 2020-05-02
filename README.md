@@ -1,5 +1,7 @@
 # Library-System
 Local Library System
+This System is created using Nodejs and Express to perform the server side activities and Vanilla Javascript, HTML and CSS to design front-end.
+The Template of the Webpages is EJS.
 
 # Installing dependencies
 Clone the repository on Your system

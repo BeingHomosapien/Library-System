@@ -14,6 +14,7 @@ var session// Creating a global session
 // So we need to create Multiple sessions aand store them accordingly
 // req.session.destroy((err)=>{}); is used to destroy a session.
 
+
 app.use(bodyparser.urlencoded({
     extended:true
 }));

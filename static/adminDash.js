@@ -13,5 +13,12 @@ window.onload = function(){
         button.disabled = true;
       }
     })
+    try{
+      setTimeout(function(){
+        $('.hidden').fadeOut('slow');
+      }, 2000);
+    }
+    catch(Exception){
 
+    }
 }
