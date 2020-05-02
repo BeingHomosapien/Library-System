@@ -226,7 +226,8 @@ route.post('/request', function(req, res){
     var dbookid = req.session.remove_bookid;
     if(req.session.password === pass){
         if (type=="issue"){
-            connection.query(`Update test set status = "1", IssuedTo = "${req.session.username}" where BookID = "${ibookid}";`, function(err, rows, fields){
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            connection.query(`Update test set status = "1", IssuedTo = "${req.session.username}", DateIssued = "${date}" where BookID = "${ibookid}";`, function(err, rows, fields){
                 if(!err){
                     req.session.dasherr= {status : true, type : "success", message : "Book has been issued check your dashboard!!"}
                     req.session.count = 0;
