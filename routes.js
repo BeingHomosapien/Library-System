@@ -253,6 +253,21 @@ route.post('/request', function(req, res){
 });
 
 route.post('/add', function(req, res){
+    var bookid = req.body.bookid;
+    var bookname = req.body.bookname;
+    var author = req.body.author;
+    connection.query(`Insert into test values("${bookid}", "${bookname}", "${author}", "0", NULL, NULL);`, function(err, rows, fields){
+        if(!err){
+            res.render('/dashboard');
+        }
+        else if(err.errno == 1062){
+            console.log(err)
+            res.render('/dashboard')
+        }
+        else{
+            res.render('/dashboard')
+        }
+    });
     res.redirect('/dashboard')
 });
 module.exports = route ;
