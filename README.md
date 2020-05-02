@@ -13,7 +13,6 @@ This app runs on 127.0.0.1:8000
 
 But you can change in the app.js file.
 
-I will be using a remote host for this Library System but if you want to use the local host please follow the steps below;
 
 # Configuring Mysql;
 If you want to use the localhost
@@ -31,3 +30,12 @@ Follow these Steps
 4. The use this command -> source <path of the .sql file> ;
 
 and this will configure you to use the database
+
+# Test Logins:
+For admin previlages login as:
+username - admin
+password - supersecret
+
+For common user:
+username - b19108
+password - rohanraj@123
