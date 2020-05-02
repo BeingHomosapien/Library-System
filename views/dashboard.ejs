@@ -7,17 +7,17 @@
             <form action = "/add" method = "POST">
                 <div class="form-group text-primary">
                     <label>Book ID</label>
-                    <input placeholder="Enter The Book ID" name="bookid" type="text" class= "form-contorl">
+                    <input id = "input1" placeholder="Enter The Book ID" name="bookid" type="text" class= "form-contorl">
                 </div>
                 <div class="form-group text-primary">
                     <label>Book Name</label>
-                    <input placeholder = "Enter Book Name" name="bookname" type = "text" class="form-control">
+                    <input id = "input2" placeholder = "Enter Book Name" name="bookname" type = "text" class="form-control">
                 </div>
                 <div class="form-group text-primary">
                     <label>Author Name</label>
-                    <input placeholder = "Author Name" name="author" type = "text" class="form-control">
+                    <input id = "input3" placeholder = "Author Name" name="author" type = "text" class="form-control">
                 </div>
-                <button type="submit" class="btn btn-primary btn-large">Add Book</button>
+                <button id = "submit" type="submit" class="btn btn-primary btn-large">Add Book</button>
             </form>
         <% } else { %>
             <h4>Hello, <%- session.username %></h5>
@@ -58,3 +58,5 @@
         font-size:2em;
       }
 </style>
+
+<script src="adminDash.js"></script>

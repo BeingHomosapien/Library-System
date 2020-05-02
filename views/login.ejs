@@ -5,13 +5,13 @@
     <form action="/login" method="POST">
       <div class="form-group text-primary">
         <label>Username</label>
-        <input type="text" name="username" class="form-control">
+        <input id = "input1" type="text" name="username" class="form-control" value="">
       </div>
       <div class="form-group text-primary">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" >
+        <input id = "input2" type="password" name="password" class="form-control" value="" >
       </div>
-      <button type="submit" class="btn btn-primary btn-large">Submit</button>
+      <button id= "submit" type="submit" class="btn btn-primary btn-large">Submit</button>
     </form>
   </div>
 </div>
@@ -24,3 +24,4 @@
     font-size:2em;
   }
 </style>
+<script src="login.js"></script>
