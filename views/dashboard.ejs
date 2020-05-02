@@ -1,8 +1,11 @@
 <%- include ('includes/navbar') %>
 <div class='container'>
     <div class='jumbotron'>
+        <% if (( session.dasherr != undefined && session.dasherr.status == true)) { %>
+            <h3 id = "<%- session.dasherr.type %>"><%- session.dasherr.message %></h3>
+        <% } %>    
         <% if (session.username === "admin") { %>
-            <h4>Hello, Admin </h5>
+            <h4 class="badge badge-danger">Hello, Admin </h5>
             <h4>Add another Book to the Library</h4>
             <form action = "/add" method = "POST">
                 <div class="form-group text-primary">
@@ -56,7 +59,15 @@
     label{
         color:white;
         font-size:2em;
-      }
+    }
+    #success {
+        color:white;
+        background-color: green;
+    }
+    #error{
+        color:white;
+        background-color: red;
+    }
 </style>
 
 <script src="adminDash.js"></script>

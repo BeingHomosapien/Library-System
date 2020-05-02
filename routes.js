@@ -27,6 +27,7 @@ route.get('/books',function(req,res){
 route.all('/login', function(req, res){
     session = req.session;
     if (req.session.logged){
+        req.session.dasherr = {status:false}
         res.redirect('dashboard');
     }
     else{
@@ -83,9 +84,11 @@ route.all('/login', function(req, res){
 route.get('/dashboard', function(req, res){
     if (req.session.logged){
         if(req.session.username === 'admin'){
+            req.session.dasherr = {status:false};
             res.render('dashboard',{session:req.session})
         }
         else{
+            
             connection.query(`Select*from users u, test t where u.ID = t.IssuedTo and u.ID = "${req.session.username}";`, function(err, rows, fields){
                 if (!(err)){
                     if(rows.length != 0){
@@ -96,6 +99,7 @@ route.get('/dashboard', function(req, res){
                     }
                 }
                 else{
+                    req.session.dasherr = {status:false, type:'error', message:"Some Error has occured please Try again!!" }
                     console.log(err);
                     res.render('dashboard', {session: req.session})
                 }
@@ -126,6 +130,7 @@ route.get('/issuerequest', function(req, res){
                 console.log(rows[0])
                 info = rows[0];
                 if (rows[0] != undefined && rows[0].status == "1"){
+                    req.session.dasherr= {status : true, type : "error", message : "Book has already been Issued!!"}
                     res.redirect('dashboard')
                 }
                 else{
@@ -157,6 +162,7 @@ route.get('/returnrequest', function(req,res){
                     res.render('request',{data1: rows[0], session:req.session, type:"return"})
                 }
                 else if(rows[0] != undefined){
+                    req.session.dasherr= {status : true, type : "error", message : "This Book doesnot Belongs to You!!"}
                     console.log("Not requested")
                     res.redirect('dashboard')
                 }
@@ -165,6 +171,7 @@ route.get('/returnrequest', function(req,res){
                 }
             }
             else{
+                req.session.dasherr= {status : true, type : "error", message : "Some Error has occured pleade Try again!!"}
                 console.log(err)
                 res.redirect('dashboard')
             }
@@ -187,6 +194,7 @@ route.get('/removerequest', function(req, res){
                 console.log(rows[0])
                 info = rows[0];
                 if (rows[0] != undefined &&rows[0].status == "1"){
+                    req.session.dasherr= {status : true, type : "error", message : "Book is Issued!!"}
                     res.redirect('dashboard');
                 }
                 else{
@@ -216,9 +224,11 @@ route.post('/request', function(req, res){
         if (type=="issue"){
             connection.query(`Update test set status = "1", IssuedTo = "${req.session.username}" where BookID = "${ibookid}";`, function(err, rows, fields){
                 if(!err){
+                    req.session.dasherr= {status : true, type : "success", message : "Book has been issued check ypur dashboard!!"}
                     res.redirect('dashboard')
                 }
                 else{
+                    req.session.dasherr= {status : true, type : "error", message : "Some error has occured please Try again"}
                     console.log(err)
                     res.redirect('dashboard')
                 }
@@ -227,9 +237,11 @@ route.post('/request', function(req, res){
         else if(type=="remove"){
             connection.query(`Delete from test where BookID = "${dbookid}";`,function(err, rows, fields){
                 if(!err){
+                    req.session.dasherr= {status : true, type : "success", message : "Book has been removed form the Library!!"}
                     res.redirect('dashboard');
                 }
                 else{
+                    req.session.dasherr= {status : true, type : "error", message : "Some Error has occured please Try again!!"}
                     console.log(err);
                     res.redirect('dashboard')
                 }
@@ -238,9 +250,11 @@ route.post('/request', function(req, res){
         else if(type == "return"){
             connection.query(`Update test set status = "0", IssuedTo = NULL where BookId = "${rbookid}" and IssuedTo = "${req.session.username}";` ,function(err, rows, fields){
                 if(!err){
+                    req.session.dasherr= {status : true, type : "success", message : "Book has been returned to Library!!"}
                     res.redirect('dashboard')
                 }
                 else{
+                    req.session.dasherr= {status : true, type : "error", message : "Some Error has occured please Try again!!"}
                     console.log(err)
                     res.redirect('dashboard')
                 }
@@ -258,14 +272,17 @@ route.post('/add', function(req, res){
     var author = req.body.author;
     connection.query(`Insert into test values("${bookid}", "${bookname}", "${author}", "0", NULL, NULL);`, function(err, rows, fields){
         if(!err){
-            res.render('dashboard');
+            req.session.dasherr= {status : true, type : "success", message : "Book has been Added check the books section!!"}
+            res.redirect('dashboard');
         }
         else if(err.errno == 1062){
+            req.session.dasherr= {status : true, type : "error", message : "There is already a Book with given Book ID!!"}
             console.log(err)
-            res.render('dashboard')
+            res.redirect('dashboard')
         }
         else{
-            res.render('dashboard')
+            req.session.dasherr= {status : true, type : "error", message : "Some Error has occured please Try again!!"}
+            res.redirect('dashboard')
         }
     });
     res.redirect('/dashboard')
