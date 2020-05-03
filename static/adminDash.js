@@ -16,7 +16,7 @@ window.onload = function(){
     try{
       setTimeout(function(){
         $('.hidden').fadeOut('slow');
-      }, 2000);
+      }, 3000);
     }
     catch(Exception){
 

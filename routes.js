@@ -17,7 +17,6 @@ route.get('/books',function(req,res){
         }
         else{
             data = rows;
-            console.log(data);
             res.render('books', {array : data, session:req.session});
         }
     });
@@ -32,7 +31,6 @@ route.all('/login', function(req, res){
     }
     else{
         if(req.method == "GET"){
-            let error = "PLease Login First!!"
             console.log(req.route.path); // This will return the path of the route from which the request is being made.
             res.render('login', {session:req.session});
         }
@@ -159,12 +157,11 @@ route.get('/returnrequest', function(req,res){
             if(!err){
                 req.session.return_bookid = id;
                 if (rows[0] != undefined && rows[0].IssuedTo === req.session.username){
-                    console.log('Requested')
+        
                     res.render('request',{data1: rows[0], session:req.session, type:"return"})
                 }
                 else if(rows[0] != undefined){
                     req.session.dasherr= {status : true, type : "error", message : "This Book doesnot Belongs to You!!"}
-                    console.log("Not requested")
                     req.session.count = 0;
                     res.redirect('dashboard')
                 }
@@ -226,7 +223,8 @@ route.post('/request', function(req, res){
     var dbookid = req.session.remove_bookid;
     if(req.session.password === pass){
         if (type=="issue"){
-            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var today = new Date();
+            var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
             connection.query(`Update test set status = "1", IssuedTo = "${req.session.username}", DateIssued = "${date}" where BookID = "${ibookid}";`, function(err, rows, fields){
                 if(!err){
                     req.session.dasherr= {status : true, type : "success", message : "Book has been issued check your dashboard!!"}
@@ -258,7 +256,7 @@ route.post('/request', function(req, res){
             });
         }
         else if(type == "return"){
-            connection.query(`Update test set status = "0", IssuedTo = NULL where BookId = "${rbookid}" and IssuedTo = "${req.session.username}";` ,function(err, rows, fields){
+            connection.query(`Update test set status = "0", IssuedTo = NULL, DateIssued=NULL where BookId = "${rbookid}" and IssuedTo = "${req.session.username}";` ,function(err, rows, fields){
                 if(!err){
                     req.session.dasherr= {status : true, type : "success", message : "Book has been returned to Library!!"}
                     req.session.count = 0;
